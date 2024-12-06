@@ -46,8 +46,17 @@ func main() {
 	slices.SortFunc(listB, func(i, j int) int {
 		return cmp.Compare(i, j)
 	})
-
-	for _, val := range listA {
-		fmt.Printf("Location: %s\n", strconv.Itoa(val))
+	totalDistance := 0
+	for index := range listA {
+		totalDistance += absInt(listA[index] - listB[index])
 	}
+
+	fmt.Printf("The total difference is: %s\n", strconv.Itoa(totalDistance))
+}
+
+func absInt(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
 }
