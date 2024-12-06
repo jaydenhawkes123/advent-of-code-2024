@@ -2,8 +2,11 @@ package main
 
 import (
 	"bufio"
+	"cmp"
+	"fmt"
 	"log"
 	"os"
+	"slices"
 	"strconv"
 )
 
@@ -21,7 +24,7 @@ func main() {
 	flip := true
 	for fileScanner.Scan() {
 		locationStr := fileScanner.Text()
-		location, err := strconv.Atoi(locationStr)
+		location, err := strconv.ParseInt(locationStr, 10, 32)
 
 		if err != nil {
 			log.Printf("Error parsing location id: %s", err)
@@ -30,10 +33,21 @@ func main() {
 
 		if flip {
 			flip = !flip
-			listA = append(listA, location)
+			listA = append(listA, int(location))
 			continue
 		}
 		flip = !flip
-		listB = append(listB, location)
+		listB = append(listB, int(location))
+	}
+
+	slices.SortFunc(listA, func(i, j int) int {
+		return cmp.Compare(i, j)
+	})
+	slices.SortFunc(listB, func(i, j int) int {
+		return cmp.Compare(i, j)
+	})
+
+	for _, val := range listA {
+		fmt.Printf("Location: %s\n", strconv.Itoa(val))
 	}
 }
